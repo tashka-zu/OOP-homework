@@ -13,7 +13,7 @@ class Category:
         self.products = []
 
 
-category = Category("Electronics", "Electronic devices")
-product = Product("Smartphone", "A high-tech smartphone", 599.99, 10)
+category = Category("Электроника", "Электрические приборы")
+product = Product("Техника", "Ноутбук", 30000.39, 10)
 
 category.products.append(product)
