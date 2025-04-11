@@ -45,11 +45,15 @@ def test_product_price_setter():
     product.price = 25000.0
     assert product.price == 25000.0
 
-    product.price = -100
-    assert product.price == 25000.0
+    try:
+        product.price = -100
+    except ValueError as e:
+        assert str(e) == "Цена не должна быть нулевая или отрицательная"
 
-    product.price = 0
-    assert product.price == 25000.0
+    try:
+        product.price = 0
+    except ValueError as e:
+        assert str(e) == "Цена не должна быть нулевая или отрицательная"
 
     product.description = "Обновленный ноутбук"
     assert product.description == "Обновленный ноутбук"
@@ -114,12 +118,12 @@ def test_category_multiple_products():
 def test_product_initialization_with_invalid_data():
     try:
         Product("Техника", "Ноутбук", -100, 10)
-    except Exception as e:
+    except ValueError as e:
         assert str(e) == "Цена не должна быть нулевая или отрицательная"
 
     try:
         Product("Техника", "Ноутбук", 0, 10)
-    except Exception as e:
+    except ValueError as e:
         assert str(e) == "Цена не должна быть нулевая или отрицательная"
 
 
@@ -129,8 +133,11 @@ def test_product_quantity_setter():
     product.quantity = 15
     assert product.quantity == 15
 
-    product.quantity = -5
-    assert product.quantity == 15
+    try:
+        product.quantity = -5
+    except ValueError as e:
+        assert str(e) == "Количество не может быть отрицательным"
+
     product.quantity = 0
     assert product.quantity == 0
 
@@ -138,12 +145,12 @@ def test_product_quantity_setter():
 def test_category_initialization_with_invalid_data():
     try:
         Category("", "Электрические приборы")
-    except Exception as e:
+    except ValueError as e:
         assert str(e) == "Название категории не может быть пустым"
 
     try:
         Category("Электроника", "")
-    except Exception as e:
+    except ValueError as e:
         assert str(e) == "Описание категории не может быть пустым"
 
 

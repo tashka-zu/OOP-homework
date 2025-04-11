@@ -21,7 +21,7 @@ class Product:
     @price.setter
     def price(self, value):
         if value <= 0:
-            print("Цена не должна быть нулевая или отрицательная")
+            raise ValueError("Цена не должна быть нулевая или отрицательная")
         else:
             self.__price = value
 
@@ -32,7 +32,7 @@ class Product:
     @quantity.setter
     def quantity(self, value):
         if value < 0:
-            print("Количество не может быть отрицательным")
+            raise ValueError("Количество не может быть отрицательным")
         else:
             self.__quantity = value
 
@@ -47,7 +47,9 @@ class Category:
         self.__products = []
         Category.category_count += 1
 
-    def add_product(self, product: Product):
+    def add_product(self, product):
+        if not isinstance(product, Product):
+            raise TypeError("Добавляемый объект должен быть экземпляром класса Product или его наследников")
         self.__products.append(product)
         Category.product_count += 1
 
