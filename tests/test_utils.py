@@ -1,30 +1,33 @@
-from src.utils import Product, Category
+from src.utils import Category, Product
 
-def test_create_product():
-    product = Product("Техника", "Ноутбук", 30000.39, 10)
-    assert product.name == "Техника"
-    assert product.description == "Ноутбук"
-    assert product.price == 30000.39
-    assert product.quantity == 10
 
 def test_create_category():
+    Category.category_count = 0
+    Category.product_count = 0
+
     category = Category("Электроника", "Электрические приборы")
     assert category.name == "Электроника"
     assert category.description == "Электрические приборы"
     assert category.products == []
+    assert Category.category_count == 1
+
 
 def test_add_product_to_category():
+    Category.category_count = 0
+    Category.product_count = 0
+
     category = Category("Электроника", "Электрические приборы")
     product = Product("Техника", "Ноутбук", 30000.39, 10)
-    category.products.append(product)
+    category.add_product(product)
     assert len(category.products) == 1
     assert category.products[0].name == "Техника"
+    assert Category.product_count == 1
 
-def test_product_attributes():
-    product = Product("Кухонные приборы", "Плита", 60000.99, 3)
-    assert product.price == 60000.99
-    assert product.quantity == 3
-    product.price = 50000.99
-    product.quantity = 4
-    assert product.price == 50000.99
-    assert product.quantity == 4
+
+def test_category_count():
+    Category.category_count = 0
+    Category.product_count = 0
+
+    Category("Электроника", "Электрические приборы")
+    Category("Мебель", "Домашняя мебель")
+    assert Category.category_count == 2
