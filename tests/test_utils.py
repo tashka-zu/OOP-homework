@@ -124,12 +124,7 @@ def test_product_addition():
     product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
 
     total_product = product1 + product2
-    assert total_product.name == "Суммарный продукт"
-    assert total_product.quantity == 13
-    assert total_product.price == (180000.0 * 5 + 210000.0 * 8) / 13
-
-    total_cost = total_product.price * total_product.quantity
-    assert total_cost == 180000.0 * 5 + 210000.0 * 8
+    assert total_product == 180000.0 * 5 + 210000.0 * 8
 
 
 def test_category_str_representation():
@@ -153,8 +148,6 @@ def test_product_str_representation():
 
 def test_product_setters():
     product = Product("Техника", "Ноутбук", 30000.39, 10)
-
-    # Тестирование установки цены
     product.price = 25000.0
     assert product.price == 25000.0
 

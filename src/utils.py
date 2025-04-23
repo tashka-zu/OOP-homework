@@ -44,14 +44,7 @@ class Product:
             raise TypeError()
 
         total_price = self.price * self.quantity + other.price * other.quantity
-        total_quantity = self.quantity + other.quantity
-
-        return Product(
-            name="Суммарный продукт",
-            description="Суммарный продукт для расчета общей стоимости",
-            price=total_price / total_quantity,
-            quantity=total_quantity,
-        )
+        return total_price
 
 
 class Category:
