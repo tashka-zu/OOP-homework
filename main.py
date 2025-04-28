@@ -71,6 +71,16 @@ if __name__ == "__main__":
 
     print(category_smartphones.get_products())
 
+    print(category_smartphones.name == "Смартфоны")
+    print(category_grass.name == "Газонная трава")
+
+    print(category_smartphones.description)
+    print(category_grass.description)
+
+    print(len(category_smartphones.get_products_list()))
+    print(len(category_grass.get_products_list()))
+
+    print(Category.category_count)
     print(Category.product_count)
 
     try:

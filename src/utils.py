@@ -1,9 +1,30 @@
-class Product:
-    def __init__(self, name: str, description: str, price: float, quantity: int):
+from abc import ABC, abstractmethod
+
+
+class BaseProduct(ABC):
+    @abstractmethod
+    def __str__(self):
+        pass
+
+    @abstractmethod
+    def __add__(self, other):
+        pass
+
+
+class InitPrintMixin:
+    def __init__(self, *args, **kwargs):
+        cls_name = self.__class__.__name__
+        print(f"{cls_name}{args}{kwargs}")
+        super().__init__()
+
+
+class Product(InitPrintMixin, BaseProduct):
+    def __init__(self, name: str, description: str, price: float, quantity: int, **kwargs):
         self.name = name
         self.description = description
         self.__price = price
-        self.quantity = quantity
+        self.__quantity = quantity
+        super().__init__(name, description, price, quantity, **kwargs)
 
     @classmethod
     def new_product(cls, product_data: dict):
@@ -22,8 +43,7 @@ class Product:
     def price(self, value):
         if value < 0:
             raise ValueError("Цена не должна быть отрицательной")
-        else:
-            self.__price = value
+        self.__price = value
 
     @property
     def quantity(self):
@@ -32,9 +52,8 @@ class Product:
     @quantity.setter
     def quantity(self, value):
         if value < 0:
-            raise ValueError()
-        else:
-            self.__quantity = value
+            raise ValueError("Количество не должно быть отрицательным")
+        self.__quantity = value
 
     def __str__(self):
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
@@ -42,9 +61,7 @@ class Product:
     def __add__(self, other):
         if not isinstance(other, type(self)):
             raise TypeError("Можно складывать только продукты одного класса")
-
-        total_price = self.price * self.quantity + other.price * other.quantity
-        return total_price
+        return self.price * self.quantity + other.price * other.quantity
 
 
 class Smartphone(Product):
@@ -59,11 +76,13 @@ class Smartphone(Product):
         memory: str,
         color: str,
     ):
-        super().__init__(name, description, price, quantity)
         self.efficiency = efficiency
         self.model = model
         self.memory = memory
         self.color = color
+        super().__init__(
+            name, description, price, quantity, efficiency=efficiency, model=model, memory=memory, color=color
+        )
 
     def __str__(self):
         return (
@@ -83,10 +102,12 @@ class LawnGrass(Product):
         germination_period: int,
         color: str,
     ):
-        super().__init__(name, description, price, quantity)
         self.country = country
         self.germination_period = germination_period
         self.color = color
+        super().__init__(
+            name, description, price, quantity, country=country, germination_period=germination_period, color=color
+        )
 
     def __str__(self):
         return (
@@ -114,6 +135,9 @@ class Category:
 
     def get_products(self):
         return [str(product) for product in self.__products]
+
+    def get_products_list(self):
+        return self.__products
 
     def __str__(self):
         total_quantity = sum(product.quantity for product in self.__products)

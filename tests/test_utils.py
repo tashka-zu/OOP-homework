@@ -3,15 +3,17 @@ import pytest
 from src.utils import Category, LawnGrass, Product, Smartphone
 
 
-def test_product_creation():
+def test_product_creation(capsys):
     product = Product("Test Product", "Description", 100.0, 10)
     assert product.name == "Test Product"
     assert product.description == "Description"
     assert product.price == 100.0
     assert product.quantity == 10
+    captured = capsys.readouterr()
+    assert captured.out.strip() == ("Product('Test Product', 'Description', 100.0, 10){}")
 
 
-def test_smartphone_creation():
+def test_smartphone_creation(capsys):
     smartphone = Smartphone("Smartphone", "Description", 500.0, 5, 95.0, "Model", "128GB", "Black")
     assert smartphone.name == "Smartphone"
     assert smartphone.description == "Description"
@@ -21,9 +23,14 @@ def test_smartphone_creation():
     assert smartphone.model == "Model"
     assert smartphone.memory == "128GB"
     assert smartphone.color == "Black"
+    captured = capsys.readouterr()
+    assert captured.out.strip() == (
+        "Smartphone('Smartphone', 'Description', 500.0, 5)"
+        "{'efficiency': 95.0, 'model': 'Model', 'memory': '128GB', 'color': 'Black'}"
+    )
 
 
-def test_lawn_grass_creation():
+def test_lawn_grass_creation(capsys):
     grass = LawnGrass("Grass", "Description", 50.0, 20, "Country", 10, "Green")
     assert grass.name == "Grass"
     assert grass.description == "Description"
@@ -32,6 +39,11 @@ def test_lawn_grass_creation():
     assert grass.country == "Country"
     assert grass.germination_period == 10
     assert grass.color == "Green"
+    captured = capsys.readouterr()
+    assert captured.out.strip() == (
+        "LawnGrass('Grass', 'Description', 50.0, 20)"
+        "{'country': 'Country', 'germination_period': 10, 'color': 'Green'}"
+    )
 
 
 def test_add_same_class_products():
