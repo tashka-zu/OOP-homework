@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 
-
 class BaseProduct(ABC):
     @abstractmethod
     def __str__(self):
@@ -10,13 +9,17 @@ class BaseProduct(ABC):
     def __add__(self, other):
         pass
 
-
 class InitPrintMixin:
     def __init__(self, *args, **kwargs):
         cls_name = self.__class__.__name__
         print(f"{cls_name}{args}{kwargs}")
         super().__init__()
 
+    def __repr__(self):
+        cls_name = self.__class__.__name__
+        args_repr = ", ".join(repr(arg) for arg in self.args)
+        kwargs_repr = ", ".join(f"{k}={v!r}" for k, v in self.kwargs.items())
+        return f"{cls_name}({args_repr}, {kwargs_repr})"
 
 class Product(InitPrintMixin, BaseProduct):
     def __init__(self, name: str, description: str, price: float, quantity: int, **kwargs):
@@ -24,6 +27,8 @@ class Product(InitPrintMixin, BaseProduct):
         self.description = description
         self.__price = price
         self.__quantity = quantity
+        self.args = (name, description, price, quantity)
+        self.kwargs = kwargs
         super().__init__(name, description, price, quantity, **kwargs)
 
     @classmethod
@@ -63,7 +68,6 @@ class Product(InitPrintMixin, BaseProduct):
             raise TypeError("Можно складывать только продукты одного класса")
         return self.price * self.quantity + other.price * other.quantity
 
-
 class Smartphone(Product):
     def __init__(
         self,
@@ -90,7 +94,6 @@ class Smartphone(Product):
             f"{self.color}, {self.price} руб. Остаток: {self.quantity} шт."
         )
 
-
 class LawnGrass(Product):
     def __init__(
         self,
@@ -114,7 +117,6 @@ class LawnGrass(Product):
             f"{self.name}, {self.country}, {self.germination_period} дней, "
             f"{self.color}, {self.price} руб. Остаток: {self.quantity} шт."
         )
-
 
 class Category:
     category_count = 0
