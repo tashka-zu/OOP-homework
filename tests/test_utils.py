@@ -10,7 +10,7 @@ def test_product_creation(capsys):
     assert product.price == 100.0
     assert product.quantity == 10
     captured = capsys.readouterr()
-    assert captured.out.strip() == ("Product('Test Product', 'Description', 100.0, 10){}")
+    assert captured.out.strip() == ("Product('Test Product', 'Description', 100.0, 10)")
 
 
 def test_smartphone_creation(capsys):
@@ -25,8 +25,8 @@ def test_smartphone_creation(capsys):
     assert smartphone.color == "Black"
     captured = capsys.readouterr()
     assert captured.out.strip() == (
-        "Smartphone('Smartphone', 'Description', 500.0, 5)"
-        "{'efficiency': 95.0, 'model': 'Model', 'memory': '128GB', 'color': 'Black'}"
+        "Smartphone('Smartphone', 'Description', 500.0, 5, efficiency=95.0, "
+        "model='Model', memory='128GB', color='Black')"
     )
 
 
@@ -41,8 +41,7 @@ def test_lawn_grass_creation(capsys):
     assert grass.color == "Green"
     captured = capsys.readouterr()
     assert captured.out.strip() == (
-        "LawnGrass('Grass', 'Description', 50.0, 20)"
-        "{'country': 'Country', 'germination_period': 10, 'color': 'Green'}"
+        "LawnGrass('Grass', 'Description', 50.0, 20, country='Country', germination_period=10, color='Green')"
     )
 
 
