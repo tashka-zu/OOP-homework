@@ -31,6 +31,8 @@ class InitPrintMixin:
 
 class Product(InitPrintMixin, BaseProduct):
     def __init__(self, name: str, description: str, price: float, quantity: int, **kwargs):
+        if quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
         self.name = name
         self.description = description
         self.__price = price
@@ -155,6 +157,13 @@ class Category:
 
     def get_products_list(self):
         return self._products
+
+    def middle_price(self):
+        try:
+            total_price = sum(product.price for product in self._products)
+            return total_price / len(self._products)
+        except ZeroDivisionError:
+            return 0
 
     def __str__(self):
         total_quantity = sum(product.quantity for product in self._products)
