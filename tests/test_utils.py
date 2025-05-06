@@ -13,6 +13,12 @@ def test_product_creation(capsys):
     assert captured.out.strip() == ("Product('Test Product', 'Description', 100.0, 10)")
 
 
+def test_product_creation_zero_quantity():
+    with pytest.raises(ValueError) as excinfo:
+        Product("Invalid Product", "Description", 100.0, 0)
+    assert str(excinfo.value) == "Товар с нулевым количеством не может быть добавлен"
+
+
 def test_smartphone_creation(capsys):
     smartphone = Smartphone("Smartphone", "Description", 500.0, 5, 95.0, "Model", "128GB", "Black")
     assert smartphone.name == "Smartphone"
@@ -71,3 +77,15 @@ def test_category_add_invalid_product():
     category = Category("Test Category", "Description")
     with pytest.raises(TypeError):
         category.add_product("Not a product")
+
+
+def test_category_middle_price():
+    product1 = Product("Product1", "Description", 100.0, 10)
+    product2 = Product("Product2", "Description", 200.0, 5)
+    category = Category("Test Category", "Description", [product1, product2])
+    assert category.middle_price() == (100.0 + 200.0) / 2
+
+
+def test_category_middle_price_no_products():
+    category = Category("Empty Category", "Description", [])
+    assert category.middle_price() == 0
